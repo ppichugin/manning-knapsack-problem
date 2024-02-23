@@ -13,7 +13,11 @@
 
 ---
 #### Project outline
+<<<<<<< HEAD
 1.   ✅ Exhaustive Search and Backtracking
+=======
+1. ✅ Exhaustive Search and Backtracking
+>>>>>>> 614fb6a (Add solution for Exhaustive search)
 2. ⏳ Branch and Bound
 3. ⏳ Rod's Technique 
 4. ⏳ Dynamic Programming

@@ -20,6 +20,18 @@ type Item struct {
 	isSelected    bool
 }
 
+// TEST RESULTs:
+// *** Parameters ***
+// # items: 20
+// Total value: 112
+// Total weight: 124
+// Allowed weight: 62
+//
+// *** Exhaustive Search ***
+// Elapsed: 0.108564
+// 0(9, 5) 1(10, 4) 2(7, 5) 4(4, 5) 7(9, 6) 9(10, 7) 10(3, 5) 15(6, 5) 17(8, 8) 18(9, 7) 19(7, 5)
+// Value: 82, Weight: 62, Calls: 2097151
+
 func main() {
 	//items := makeTestItems()
 	items := makeItems(numItems, minValue, maxValue, minWeight, maxWeight)
