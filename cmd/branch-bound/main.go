@@ -24,20 +24,20 @@ type Item struct {
 
 // TEST RESULTs:
 // *** Parameters ***
-//# items: 25
-//Total value: 142
-//Total weight: 158
-//Allowed weight: 79
+// # items: 25
+// Total value: 142
+// Total weight: 158
+// Allowed weight: 79
 //
-//*** Exhaustive Search ***
-//Elapsed: 4.872574
-//0(9, 5) 1(10, 4) 2(7, 5) 3(5, 6) 6(4, 6) 7(9, 6) 9(10, 7) 15(6, 5) 17(8, 8) 18(9, 7) 19(7, 5) 20(9, 4) 21(4, 5) 22(6, 6)
-//Value: 103, Weight: 79, Calls: 67108863
+// *** Exhaustive Search ***
+// Elapsed: 4.897523
+// 0(9, 5) 1(10, 4) 2(7, 5) 3(5, 6) 6(4, 6) 7(9, 6) 9(10, 7) 15(6, 5) 17(8, 8) 18(9, 7) 19(7, 5) 20(9, 4) 21(4, 5) 22(6, 6)
+// Value: 103, Weight: 79, Calls: 67108863
 //
-//*** Branch and Bound ***
-//Elapsed: 3.021726
-//0(9, 5) 1(10, 4) 2(7, 5) 3(5, 6) 4(4, 5) 6(4, 6) 7(9, 6) 9(10, 7) 15(6, 5) 17(8, 8) 18(9, 7) 19(7, 5) 20(9, 4) 22(6, 6)
-//Value: 103, Weight: 79, Calls: 47625263
+// *** Branch and Bound ***
+// Elapsed: 0.001524
+// 0(9, 5) 1(10, 4) 2(7, 5) 3(5, 6) 4(4, 5) 6(4, 6) 7(9, 6) 9(10, 7) 15(6, 5) 17(8, 8) 18(9, 7) 19(7, 5) 20(9, 4) 22(6, 6)
+// Value: 103, Weight: 79, Calls: 589017
 
 func main() {
 	items := makeItems(numItems, minValue, maxValue, minWeight, maxWeight)
@@ -209,12 +209,15 @@ func doBranchAndBound(items []Item, allowedWeight, nextIndex,
 	if nextIndex >= len(items) {
 		copiedItems := copyItems(items)
 		solutionVal := solutionValue(copiedItems, allowedWeight)
+		if solutionVal > bestValue {
+			bestValue = solutionVal
+		}
 		return copiedItems, solutionVal, 1
 	}
 
 	// We do not have a full assignment.
 	// See if we can improve this solution enough to be worth pursuing.
-	if currentValue+remainingValue <= bestValue {
+	if currentValue+remainingValue < bestValue {
 		// We cannot improve on the best solution found so far.
 		return nil, 0, 1
 	}
@@ -227,6 +230,9 @@ func doBranchAndBound(items []Item, allowedWeight, nextIndex,
 		items[nextIndex].isSelected = true
 		test1Solution, test1Value, test1Calls = doBranchAndBound(items, allowedWeight, nextIndex+1,
 			bestValue, currentValue+items[nextIndex].value, currentWeight+items[nextIndex].weight, remainingValue-items[nextIndex].value)
+		if test1Value > bestValue {
+			bestValue = test1Value
+		}
 	} else {
 		test1Solution = nil
 		test1Value = 0
@@ -242,6 +248,9 @@ func doBranchAndBound(items []Item, allowedWeight, nextIndex,
 		items[nextIndex].isSelected = false
 		test2Solution, test2Value, test2Calls = doBranchAndBound(items, allowedWeight, nextIndex+1,
 			bestValue, currentValue, currentWeight, remainingValue-items[nextIndex].value)
+		if test2Value > bestValue {
+			bestValue = test2Value
+		}
 	} else {
 		test2Solution = nil
 		test2Value = 0
