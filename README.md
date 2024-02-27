@@ -15,5 +15,5 @@
 #### Project outline
 1. ✅ Exhaustive Search and Backtracking
 2. ✅ Branch and Bound
-3. ⏳ Rod's Technique 
+3. ✅ Rod's Technique 
 4. ⏳ Dynamic Programming
